@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model thai_amphures {
+  id          Int            @id
+  name_th     String?
+  name_en     String?
+  province_id Int
+  created_at  String?
+  updated_at  String?
+  deleted_at  String?
+  provinces   thai_provinces @relation(fields: [province_id], references: [id])
+  tambons     thai_tambons[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model thai_provinces {
+  id           Int             @id
+  name_th      String
+  name_en      String?
+  geography_id Int?
+  created_at   String?
+  updated_at   String?
+  deleted_at   String?
+  amphures     thai_amphures[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model thai_tambons {
+  id         Int           @id
+  zip_code   Int?
+  name_th    String?
+  name_en    String?
+  amphure_id Int
+  created_at String?
+  updated_at String?
+  deleted_at String?
+  amphure    thai_amphures @relation(fields: [amphure_id], references: [id])
+}
